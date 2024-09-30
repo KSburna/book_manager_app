@@ -1,0 +1,33 @@
+{% extends 'base_generic.html' %}
+
+
+{% block content %}
+<div class="container">
+    {% if book_data %}
+    <h1>{{ book_data.volumeInfo.title }}</h1>
+
+    <!-- Display thumbnail image -->
+    {% if book_data.volumeInfo.imageLinks.thumbnail %}
+    <img src="{{ book_data.volumeInfo.imageLinks.thumbnail }}" alt="Book thumbnail" class="img-thumbnail"
+        style="width: 150px; height: auto;">
+    {% endif %}
+
+    <p><strong>Authors:</strong> {{ book_data.volumeInfo.authors|join:", " }}</p>
+    <p><strong>Published Date:</strong> {{ book_data.volumeInfo.publishedDate }}</p>
+    <p><strong>Description:</strong></p>
+    {{ book_data.volumeInfo.description | safe }}
+
+    <h3>Additional Information</h3>
+    <p><strong>Categories:</strong> {{ book_data.volumeInfo.categories|join:", " }}</p>
+    <p><strong>Page Count:</strong> {{ book_data.volumeInfo.pageCount }}</p>
+    <p><strong>Publisher:</strong> {{ book_data.volumeInfo.publisher }}</p>
+    <p><strong>Language:</strong> {{ book_data.volumeInfo.language }}</p>
+
+    <a href="{{ book_data.volumeInfo.previewLink }}" target="_blank" class="btn btn-primary">Preview on Google
+        Books</a>
+
+    {% else %}
+    <p>Book information could not be retrieved.</p>
+    {% endif %}
+</div>
+{% endblock %}

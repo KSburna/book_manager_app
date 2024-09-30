@@ -25,6 +25,17 @@ def home_view(request):
     return render(request, "book/home.html", context)
 
 
+# Book detail view
+@login_required
+def book_detail(request, google_book_id):
+    # Fetch book details from Google Books API
+    response = requests.get(f"{GOOGLE_BOOKS_API_URL}/{google_book_id}")
+    book_data = response.json() if response.status_code == 200 else None
+
+    context = {"book_data": book_data, "google_book_id": google_book_id}
+    return render(request, "book/book_detail.html", context)
+
+
 def signup_view(request):
     if request.method == "POST":
         form = CustomAuthUserCreationForm(request.POST)
