@@ -1,0 +1,62 @@
+{% extends 'base_generic.html' %}
+
+{% block content %}
+    <div class="container d-flex justify-content-center align-items-center vh-100">
+        <div class="card shadow-sm p-4" style="width: 100%; max-width: 400px;">
+            <h2 class="text-center mb-4">Sign Up</h2>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary w-100">Sign Up</button>
+            </form>
+            <p>Already have an account? <a href="{% url 'login' %}">Login here</a></p>
+        </div>
+    </div>
+
+    <script>
+        $('input').addClass("form-control");
+        $('#id_email').on('input', function () {
+            var input = $(this);
+            var re = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+            var is_email = re.test(input.val());
+            if (is_email) {
+                input.removeClass("is-invalid").addClass("is-valid");
+            } else {
+                input.removeClass("is-valid").addClass("is-invalid");
+            }
+        });
+        $('#id_password1').on('input', function () {
+            var input = $(this);
+            if (input.val().length > 7) {
+                input.removeClass("is-invalid").addClass("is-valid");
+            } else {
+                input.removeClass("is-valid").addClass("is-invalid");
+            }
+        });
+        $('#id_first_name').on('input', function () {
+            var input = $(this);
+            if (input.val().length > 3) {
+                input.removeClass("is-invalid").addClass("is-valid");
+            } else {
+                input.removeClass("is-valid").addClass("is-invalid");
+            }
+        });
+        $('#id_last_name').on('input', function () {
+            var input = $(this);
+            if (input.val().length > 3) {
+                input.removeClass("is-invalid").addClass("is-valid");
+            } else {
+                input.removeClass("is-valid").addClass("is-invalid");
+            }
+        });
+        $('#id_password2').on('input', function () {
+            var input = $(this);
+            if (input.val().length > 7 && $('#id_password1').val() === input.val()) {
+                input.removeClass("is-invalid").addClass("is-valid");
+            } else {
+                input.removeClass("is-valid").addClass("is-invalid");
+            }
+        });
+    </script>
+
+{% endblock %}

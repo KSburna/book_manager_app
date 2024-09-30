@@ -1,0 +1,37 @@
+{% extends 'base_generic.html' %}
+
+{% block content %}
+    <div class="container d-flex justify-content-center align-items-center vh-100">
+        <div class="card shadow-sm p-4" style="width: 100%; max-width: 400px;">
+            <h2 class="text-center mb-4">Login</h2>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary w-100">Login</button>
+            </form>
+            <p>Don't have an account? <a href="{% url 'signup' %}">Sign up here</a></p>
+            <a href="{% url 'password_reset' %}">Forgot your password?</a>
+        </div>
+    </div>
+    <script>
+        $('input').addClass("form-control");
+        $('#id_username').on('input', function () {
+            var input = $(this);
+            var re = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+            var is_email = re.test(input.val());
+            if (is_email) {
+                input.removeClass("is-invalid").addClass("is-valid");
+            } else {
+                input.removeClass("is-valid").addClass("is-invalid");
+            }
+        });
+        $('#id_password').on('input', function () {
+            var input = $(this);
+            if (input.val().length > 0) {
+                input.removeClass("is-invalid").addClass("is-valid");
+            } else {
+                input.removeClass("is-valid").addClass("is-invalid");
+            }
+        });
+    </script>
+{% endblock %}

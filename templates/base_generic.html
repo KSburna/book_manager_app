@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Book Manager</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js">
+    </script>
+    <style>
+        /* Message Container */
+        .message {
+            margin-bottom: 10px;
+        }
+
+        /* Sent Messages */
+        .message.sent .message-content {
+            text-align: right;
+        }
+
+        .message.sent {
+            background-color: #d1e7dd; /* Light green background for sent messages */
+            border-radius: 10px;
+            padding: 10px;
+            margin-left: 50px; /* Indent for sent messages */
+        }
+
+        /* Received Messages */
+        .message.received .message-content {
+            text-align: left;
+        }
+
+        .message.received {
+            background-color: #f8d7da; /* Light red background for received messages */
+            border-radius: 10px;
+            padding: 10px;
+            margin-right: 50px; /* Indent for received messages */
+        }
+
+        /* Message Content */
+        .message-content p {
+            margin: 0;
+        }
+
+        /* Styling for Timestamp */
+        .message-content small {
+            display: block;
+            color: #888;
+        }
+
+        .nav-link{
+            color: white !important;
+        }
+    </style>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <a class="navbar-brand" href="{% url 'home' %}">My Book Manager</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <div class="ml-auto d-flex align-items-center">
+            {% if user.is_authenticated %}
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'change_user_details' %}">Update Details</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'password_change' %}">Update Password</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+                    </li>
+                </ul>
+            {% else %}
+                <a class="nav-link" href="{% url 'login' %}">Login</a>
+            {% endif %}
+        </div>
+    </div>
+</nav>
+
+
+
+<div class="container">
+    {% block content %}
+    {% endblock %}
+</div>
+
+</body>
+</html>

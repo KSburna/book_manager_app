@@ -1,0 +1,40 @@
+{% extends 'base_generic.html' %}
+
+{% block content %}
+    <div class="container d-flex justify-content-center align-items-center vh-100">
+        <div class="card shadow-sm p-4" style="width: 100%; max-width: 400px;">
+            <h2 class="text-center mb-4">Change User Details</h2>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary w-100">Save Changes</button>
+            </form>
+            <div class="mt-3 text-center">
+                <a href="{% url 'home' %}">Back to Home</a>
+            </div>
+        </div>
+    </div>
+    <script>
+        $('input').addClass("form-control");
+
+        // Client-side validation for first name
+        $('#id_first_name').on('input', function () {
+            var input = $(this);
+            if (input.val().length > 3) {
+                input.removeClass("is-invalid").addClass("is-valid");
+            } else {
+                input.removeClass("is-valid").addClass("is-invalid");
+            }
+        });
+
+        // Client-side validation for last name
+        $('#id_last_name').on('input', function () {
+            var input = $(this);
+            if (input.val().length > 3) {
+                input.removeClass("is-invalid").addClass("is-valid");
+            } else {
+                input.removeClass("is-valid").addClass("is-invalid");
+            }
+        });
+    </script>
+{% endblock %}
