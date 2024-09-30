@@ -14,6 +14,11 @@ def home_view(request):
     query = request.GET.get("q")
     books = []
 
+    # Fetch latest 5 searches for the user
+    latest_searches = SearchHistory.objects.filter(user=request.user).order_by(
+        "-viewed_at"
+    )[:5]
+
     if query:
         response = requests.get(GOOGLE_BOOKS_API_URL, params={"q": query})
         if response.status_code == 200:
@@ -22,7 +27,7 @@ def home_view(request):
 
     if query is None:
         query = ""
-    context = {"books": books, "query": query}
+    context = {"books": books, "query": query, "search_history": latest_searches}
     return render(request, "book/home.html", context)
 
 

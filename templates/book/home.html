@@ -35,5 +35,27 @@
     <p>No results found.</p>
     {% endif %}
     <div>
+        <div>
+            <h5>Latest Searches:</h5>
+            <ul class="list-group mt-4">
+                {% for history in search_history %}
+                <li class="list-group-item d-flex align-items-center">
+                    <!-- Check if the book has a thumbnail -->
+                    {% if history.book.get_book_details.volumeInfo.imageLinks.thumbnail %}
+                    <img src="{{ history.book.get_book_details.volumeInfo.imageLinks.thumbnail }}" alt="Book thumbnail"
+                        class="img-thumbnail mr-3" style="width: 100px; height: auto;">
+                    {% endif %}
+
+                    <div>
+                        <h4>{{ history.book.get_book_details.volumeInfo.title }}</h4>
+                        <p>Authors: {{ history.book.get_book_details.volumeInfo.authors|join:", " }}</p>
+                        <p>Viewed At: {{ history.viewed_at }}</p>
+                        <a href="{% url 'book_detail' history.book.google_book_id %}" class="btn btn-info">View
+                            Details</a>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
     </div>
     {% endblock %}
