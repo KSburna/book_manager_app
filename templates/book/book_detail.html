@@ -25,6 +25,17 @@
 
     <a href="{{ book_data.volumeInfo.previewLink }}" target="_blank" class="btn btn-primary">Preview on Google
         Books</a>
+        
+    <!-- Add or Remove from Favorites form -->
+    <form method="POST" action="">
+        {% csrf_token %}
+        {% if is_favorite %}
+        <button type="submit" name="remove_favorite" class="btn btn-danger mt-3">Remove from Favorites
+        </button>
+        {% else %}
+        <button type="submit" name="add_favorite" class="btn btn-warning mt-3">Add to Favorites</button>
+        {% endif %}
+    </form>
 
     {% else %}
     <p>Book information could not be retrieved.</p>

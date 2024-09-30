@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login as auth_login
 from .forms import CustomAuthUserCreationForm, CustomAuthUserLoginForm, UserDetailsForm
-from .models import Book, SearchHistory
+from .models import Book, SearchHistory, Favorite
 
 GOOGLE_BOOKS_API_URL = "https://www.googleapis.com/books/v1/volumes"
 
@@ -38,12 +38,31 @@ def book_detail(request, google_book_id):
     response = requests.get(f"{GOOGLE_BOOKS_API_URL}/{google_book_id}")
     book_data = response.json() if response.status_code == 200 else None
 
+    # Initialize the favorite status
+    is_favorite = False
+
     if book_data:
         book, created = Book.objects.get_or_create(google_book_id=google_book_id)
         # Add to SearchHistory if the book is viewed
         SearchHistory.objects.get_or_create(user=request.user, book=book)
 
-    context = {"book_data": book_data, "google_book_id": google_book_id}
+        # Check if the book is a favorite
+        is_favorite = Favorite.objects.filter(user=request.user, book=book).exists()
+
+        # Handle adding/removing from favorites
+        if request.method == "POST":
+            if "add_favorite" in request.POST:
+                Favorite.objects.get_or_create(user=request.user, book=book)
+                is_favorite = True
+            elif "remove_favorite" in request.POST:
+                is_favorite = False
+                Favorite.objects.filter(user=request.user, book=book).delete()
+
+    context = {
+        "book_data": book_data,
+        "google_book_id": google_book_id,
+        "is_favorite": is_favorite,
+    }
     return render(request, "book/book_detail.html", context)
 
 
@@ -55,6 +74,14 @@ def search_history(request):
     )
     context = {"search_history": user_history}
     return render(request, "book/search_history.html", context)
+
+
+# View for user's favorite books
+@login_required
+def favorites(request):
+    user_favorites = Favorite.objects.filter(user=request.user).select_related("book")
+    context = {"favorites": user_favorites}
+    return render(request, "book/favorites.html", context)
 
 
 def signup_view(request):

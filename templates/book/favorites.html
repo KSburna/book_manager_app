@@ -1,0 +1,31 @@
+{% extends 'base_generic.html' %}
+
+{% block content %}
+    <div class="container">
+        <br><br>
+        <h1>My Favorites</h1>
+        {% if favorites %}
+            <ul class="list-group mt-4">
+                {% for favorite in favorites %}
+                    <li class="list-group-item d-flex align-items-center">
+                        <!-- Check if the book has a thumbnail -->
+                        {% if favorite.book.get_book_details.volumeInfo.imageLinks.thumbnail %}
+                            <img src="{{ favorite.book.get_book_details.volumeInfo.imageLinks.thumbnail }}"
+                                 alt="Book thumbnail" class="img-thumbnail mr-3" style="width: 100px; height: auto;">
+                        {% endif %}
+
+                        <div>
+                            <h4>{{ favorite.book.get_book_details.volumeInfo.title }}</h4>
+                            <p>Authors: {{ favorite.book.get_book_details.volumeInfo.authors|join:", " }}</p>
+                            <p>Published Date: {{ favorite.book.get_book_details.volumeInfo.publishedDate }}</p>
+                            <a href="{% url 'book_detail' favorite.book.google_book_id %}" class="btn btn-info">View
+                                Details</a>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>You have no favorite books yet.</p>
+        {% endif %}
+    </div>
+{% endblock %}
