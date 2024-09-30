@@ -23,4 +23,5 @@ urlpatterns = [
     path('book/<str:google_book_id>/', views.book_detail, name='book_detail'),
     path('search-history/', views.search_history, name='search_history'),
     path('favorites/', views.favorites, name='favorites'),
+    path('book/<str:google_book_id>/add-comment/', views.add_comment, name='add_comment'),
 ]
