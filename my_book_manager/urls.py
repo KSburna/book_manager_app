@@ -21,4 +21,5 @@ urlpatterns = [
     path('reset/done/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
     path('change-details/', views.change_user_details, name='change_user_details'),
     path('book/<str:google_book_id>/', views.book_detail, name='book_detail'),
+    path('search-history/', views.search_history, name='search_history'),
 ]
